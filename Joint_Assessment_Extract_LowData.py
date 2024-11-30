@@ -47,23 +47,41 @@ def group_by_vision(df):
 
 # NaN 값을 포함하는 행을 건너뛰는 가중치 계산 함수
 def calculate_weight(row):
-    # NaN 값이 있으면 해당 행을 건너뛰기 위해 검사
-    if pd.isna(row['Metric_Achievement_H1']) or pd.isna(row['Metric_Achievement_H2']) or pd.isna(row['Performance_Metric_Score_H1']) or pd.isna(row['Performance_Metric_Score_H2']):
-        return None  # NaN이 있으면 가중치 계산을 하지 않음
+    # 'Evaluate_Nature_Metrics'는 사용하지 않으므로 NaN이 있어도 무시하고 넘어갑니다.
     
-    # Metric_Achievement_H1과 Metric_Achievement_H2를 숫자로 변환
+    # Metric_Achievement_H1과 Metric_Achievement_H2의 NaN 처리
     metric_h1 = pd.to_numeric(row['Metric_Achievement_H1'], errors='coerce')
     metric_h2 = pd.to_numeric(row['Metric_Achievement_H2'], errors='coerce')
-
-    # 평균 계산 (NaN 값이 있을 경우 0으로 처리)
-    metric_avg = (metric_h1 + metric_h2) / 2 if pd.notna(metric_h1) and pd.notna(metric_h2) else 0
-
-    # Performance_Metric_Score_H1과 Performance_Metric_Score_H2도 동일하게 처리
+    
+    # Performance_Metric_Score_H1과 Performance_Metric_Score_H2의 NaN 처리
     performance_h1 = pd.to_numeric(row['Performance_Metric_Score_H1'], errors='coerce')
     performance_h2 = pd.to_numeric(row['Performance_Metric_Score_H2'], errors='coerce')
 
-    performance_avg = (performance_h1 + performance_h2) / 2 if pd.notna(performance_h1) and pd.notna(performance_h2) else 0
+    # Metric_Achievement_H1과 Metric_Achievement_H2, Performance_Metric_Score_H1과 Performance_Metric_Score_H2가 모두 NaN일 경우 건너뛰기
+    if pd.isna(metric_h1) and pd.isna(metric_h2) and pd.isna(performance_h1) and pd.isna(performance_h2):
+        return None  # NaN이 모두 있을 경우 해당 행 건너뛰기
 
+    # Metric_Achievement_H1과 Metric_Achievement_H2의 평균값 계산 (하나가 NaN이면 다른 값만 사용)
+    if pd.isna(metric_h1) and pd.notna(metric_h2):
+        metric_avg = metric_h2
+    elif pd.isna(metric_h2) and pd.notna(metric_h1):
+        metric_avg = metric_h1
+    elif pd.notna(metric_h1) and pd.notna(metric_h2):
+        metric_avg = (metric_h1 + metric_h2) / 2
+    else:
+        metric_avg = 0  # 두 값 모두 NaN이면 0으로 처리
+    
+    # Performance_Metric_Score_H1과 Performance_Metric_Score_H2의 평균값 계산 (하나가 NaN이면 다른 값만 사용)
+    if pd.isna(performance_h1) and pd.notna(performance_h2):
+        performance_avg = performance_h2
+    elif pd.isna(performance_h2) and pd.notna(performance_h1):
+        performance_avg = performance_h1
+    elif pd.notna(performance_h1) and pd.notna(performance_h2):
+        performance_avg = (performance_h1 + performance_h2) / 2
+    else:
+        performance_avg = 0  # 두 값 모두 NaN이면 0으로 처리
+
+    # 최종 가중치 계산
     return metric_avg * performance_avg
 
 # Edge 생성 함수 (각 Vision에 대해)
