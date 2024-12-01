@@ -71,4 +71,4 @@ output_df = pd.DataFrame({
     'optimized_num_employees': group_assignment  # 최적화된 그룹 배치 결과
 })
 
-output_df.to_csv('Department_Optimization_byMember_v2.csv', index=False, encoding='utf-8')
+output_df.to_csv('Department_Optimization_byMember_Vision1.csv', index=False, encoding='utf-8')
