@@ -82,3 +82,14 @@ nx.draw_networkx_edges(optimized_G, pos, alpha=0.5, width=2)
 nx.draw_networkx_labels(optimized_G, pos, font_size=10, font_color='black')
 plt.title("Optimized Network with Adjusted Node Weights (PageRank Adjusted)")
 plt.show()
+
+# 9. 최적화된 엣지를 CSV 파일로 저장
+output_file = './Optimization_Pagerank_edges.csv'  # CSV 저장 경로
+optimized_edges_df = pd.DataFrame(
+    [(u, v, data['weight']) for u, v, data in optimized_G.edges(data=True)],
+    columns=['Start_Node', 'End_Node', 'Weight']
+)
+# CSV 파일로 저장
+optimized_edges_df.to_csv(output_file, index=False)
+print(f"Optimized edges have been saved to: {output_file}")
+

@@ -41,6 +41,15 @@ for u, v, data in G.edges(data=True):
         if centrality[u] > 0.5 and centrality[v] > 0.5:  # 중요한 노드들 간의 연결
             data['weight'] *= 2  # 연결 강화
 
+# 5. 강화된 엣지를 CSV 파일로 저장
+output_file = os.path.join(current_dir, './Optimization_Clustering_edges.csv')  # 저장할 파일 경로
+enhanced_edges_df = pd.DataFrame(
+    [(u, v, data['weight']) for u, v, data in G.edges(data=True)],
+    columns=['Start_Node', 'End_Node', 'Weight']
+)
+# CSV 파일로 저장
+enhanced_edges_df.to_csv(output_file, index=False)
+
 # 5. 강화된 네트워크 시각화
 # spring_layout에서 노드 간 간격을 조정하여 겹치지 않도록 설정
 pos = nx.spring_layout(G, k=15.0, seed=42)  # k값을 1.0으로 설정하여 간격을 조정
