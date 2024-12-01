@@ -14,22 +14,24 @@ nodes_df.columns = ['number', 'id']
 
 # 'source', 'target', 'weight' 컬럼을 가진 엣지 파일 로드
 edges_df = pd.read_csv('./Department_Collaborate_Vision/vision_1_edges.csv', header=None)  # 'source', 'target', 'weight' 컬럼이 있다고 가정
-#edges_df = pd.read_csv('./Department_Collaborate_Vision/vision_2_edges.csv')
-#edges_df = pd.read_csv('./Department_Collaborate_Vision/vision_3_edges.csv')
-#edges_df = pd.read_csv('./Department_Collaborate_Vision/vision_4_edges.csv')
-#edges_df = pd.read_csv('./Department_Collaborate_Vision/vision_5_edges.csv')
+#edges_df = pd.read_csv('./Department_Collaborate_Vision/vision_2_edges.csv', header=None)
+#edges_df = pd.read_csv('./Department_Collaborate_Vision/vision_3_edges.csv', header=None)
+#edges_df = pd.read_csv('./Department_Collaborate_Vision/vision_4_edges.csv', header=None)
+#edges_df = pd.read_csv('./Department_Collaborate_Vision/vision_5_edges.csv', header=None)
 edges_df.columns = ['source', 'target', 'weight']
 
 edges_df['source'] = pd.to_numeric(edges_df['source'], errors='coerce')
 edges_df['target'] = pd.to_numeric(edges_df['target'], errors='coerce')
 edges_df = edges_df.dropna(subset=['source', 'target'])
 
-# 'number', 'department', 'members' 컬럼을 가진 CSV 파일 로드
-members_df = pd.read_csv('./Department_Members.csv', header=None)  # 'number', 'department', 'members' 컬럼이 있다고 가정
-members_df.columns = ['number', 'department', 'num_employees']
+# 'number', 'members' 컬럼을 가진 CSV 파일 로드
+members_df = pd.read_csv('./employees_per_department.csv', header=None, encoding='ascii')  # 'number', 'members' 컬럼이 있다고 가정
+members_df.columns = ['number', 'num_employees'] 
+members_df['number'] = pd.to_numeric(members_df['number'], errors='coerce', downcast='integer')
 
 # 부서별 member 수를 nodes_df에 추가 (number로 매칭)
 nodes_df = nodes_df.merge(members_df[['number', 'num_employees']], on='number', how='left')
+nodes_df['num_employees'] = pd.to_numeric(nodes_df['num_employees'], errors='coerce')
 
 # 네트워크 그래프 생성
 G = nx.Graph()
@@ -49,8 +51,8 @@ centrality = nx.degree_centrality(G)
 nodes_df['centrality'] = nodes_df['id'].map(centrality)
 
 # 부서 성과지표와 인원 관계 설정 (예시)
-a = 0.1  # 인원 수에 대한 성과 기여도
-b = 0.01  # 인원 수의 제곱에 대한 성과 기여도 (비효율성)
+a = 0.7  # 인원 수에 대한 성과 기여도
+b = 0.1  # 인원 수의 제곱에 대한 성과 기여도 (비효율성)
 
 # 부서 성과지표의 조정: 인원 수에 의한 성과
 nodes_df['adjusted_performance'] = (
