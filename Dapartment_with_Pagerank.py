@@ -43,22 +43,18 @@ for vision_num in range(1, 6):
 
     # 7. 네트워크 시각화
     # 노드의 크기는 페이지랭크 값에 비례하게 설정
-    pos = nx.spring_layout(G, k=50, seed=42, scale=2.0)
-    node_sizes = [
-        adjusted_node_weights[node] * 5 for node in G.nodes()
-    ]  # 노드 크기 조정
+    pos = nx.spring_layout(G, k=15.0, iterations=15)
+    node_sizes = [adjusted_node_weights[node] for node in G.nodes()]  # 노드 크기 조정
 
     plt.figure(figsize=(12, 12))
-    nx.draw_networkx_nodes(
-        G, pos, node_size=node_sizes, node_color="lightblue", alpha=0.7
-    )
+    nx.draw_networkx_nodes(G, pos, node_size=node_sizes, node_color="lightblue")
     nx.draw_networkx_edges(G, pos, alpha=0.5, width=2)
     labels = {node: int(node) for node in G.nodes()}
     nx.draw_networkx_labels(G, pos, labels=labels, font_size=10, font_color="black")
     plt.title(f"Network {vision_num} with Adjusted Node Weights (PageRank Adjusted)")
 
     # 그래프 저장 추가
-    plt.savefig(f"network_vision_{vision_num}.png")
+    plt.savefig(f"Department_Pagerank_network_vision_{vision_num}.png")
     plt.close()  # 메모리 관리를 위해 figure 닫기
 
     # 노드별 정보 출력
