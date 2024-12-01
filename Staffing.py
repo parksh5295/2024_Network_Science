@@ -109,6 +109,12 @@ if result.success:
     print("최적화 성공")
     optimized_allocation = result.x.reshape((num_departments, num_jobs))
     print(optimized_allocation)
+    
+    # 최적화된 배치 결과를 pandas DataFrame으로 변환
+    optimized_df = pd.DataFrame(optimized_allocation, index=departments, columns=job_titles)
+    
+    # CSV 파일로 저장
+    optimized_df.to_csv('staffing_base.csv', encoding='utf-8-sig')  # CSV로 저장
 else:
     print("최적화 실패")
 
@@ -126,3 +132,4 @@ plt.ylabel('Departments')
 plt.title('Optimized Allocation of Public Employees')
 fig.colorbar(im)
 plt.show()
+
