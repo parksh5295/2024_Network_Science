@@ -14,10 +14,10 @@ nodes_df.columns = ['number', 'id']
 
 # 'source', 'target', 'weight' 컬럼을 가진 엣지 파일 로드
 edges_df = pd.read_csv('./Department_Collaborate_Vision/vision_1_edges.csv', header=None)  # 'source', 'target', 'weight' 컬럼이 있다고 가정
-#edges_df = pd.read_csv('./Department_Collaborate_Vision/vision_2_edges.csv')
-#edges_df = pd.read_csv('./Department_Collaborate_Vision/vision_3_edges.csv')
-#edges_df = pd.read_csv('./Department_Collaborate_Vision/vision_4_edges.csv')
-#edges_df = pd.read_csv('./Department_Collaborate_Vision/vision_5_edges.csv')
+#edges_df = pd.read_csv('./Department_Collaborate_Vision/vision_2_edges.csv', header=None)
+#edges_df = pd.read_csv('./Department_Collaborate_Vision/vision_3_edges.csv', header=None)
+#edges_df = pd.read_csv('./Department_Collaborate_Vision/vision_4_edges.csv', header=None)
+#edges_df = pd.read_csv('./Department_Collaborate_Vision/vision_5_edges.csv', header=None)
 edges_df.columns = ['source', 'target', 'weight']
 
 edges_df['source'] = pd.to_numeric(edges_df['source'], errors='coerce')
@@ -102,7 +102,7 @@ for epoch in range(100):
 
 # 가중치 정보를 이용해 선형 프로그래밍 문제 정의
 num_departments = len(nodes)
-c = -out.squeeze().detach().cpu().numpy()  # 그래디언트 추적을 끊고 numpy()로 변환
+c = -out.squeeze().detach().cpu().numpy()  # 그래디언트 추적을 끊고 numpy()로 변환 #중앙값 계산
 
 # 제약 조건: 부서가 하나의 그룹에만 속하도록 하기
 # 이 예시에서는 간단히 각 부서를 두 개의 그룹으로 나누는 문제로 가정
