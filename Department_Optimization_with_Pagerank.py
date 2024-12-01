@@ -105,3 +105,15 @@ for i in range(1, 6):
     # 결과 출력
     print(f"\n=== Vision {i} Results ===")
     print(f"Optimized Total Performance: {optimized_performance:.4f}")
+
+    # 최적화된 엣지를 CSV 파일로 저장
+    output_file = (
+        f"./Optimization_Pagerank_edges_vision_{i}.csv"  # 비전별 CSV 저장 경로
+    )
+    optimized_edges_df = pd.DataFrame(
+        [(u, v, data["weight"]) for u, v, data in optimized_G.edges(data=True)],
+        columns=["Start_Node", "End_Node", "Weight"],
+    )
+    # CSV 파일로 저장
+    optimized_edges_df.to_csv(output_file, index=False)
+    print(f"Optimized edges have been saved to: {output_file}")
