@@ -24,6 +24,13 @@ edges_df['source'] = pd.to_numeric(edges_df['source'], errors='coerce')
 edges_df['target'] = pd.to_numeric(edges_df['target'], errors='coerce')
 edges_df = edges_df.dropna(subset=['source', 'target'])
 
+# 'number', 'department', 'members' 컬럼을 가진 CSV 파일 로드
+members_df = pd.read_csv('./Department_Members.csv', header=None)  # 'number', 'department', 'members' 컬럼이 있다고 가정
+members_df.columns = ['number', 'department', 'num_employees']
+
+# 부서별 member 수를 nodes_df에 추가 (number로 매칭)
+nodes_df = nodes_df.merge(members_df[['number', 'num_employees']], on='number', how='left')
+
 # 네트워크 그래프 생성
 G = nx.Graph()
 

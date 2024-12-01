@@ -182,7 +182,6 @@ df14 = read_csv('./Low_Data/Department_AnalyzeScorecardResult/file14.csv')
 process_vision_data(df14, 14)
 
 
-'''
 # 15. 건설과
 df15 = read_csv('./Low_Data/Department_AnalyzeScorecardResult/file15.csv')
 process_vision_data(df15, 15)
@@ -210,7 +209,6 @@ process_vision_data(df20, 20)
 # 21. 영산포발전기획단
 df21 = read_csv('./Low_Data/Department_AnalyzeScorecardResult/file21.csv')
 process_vision_data(df21, 21)
-'''
 
 # 22. 총무과
 df22 = read_csv('./Low_Data/Department_AnalyzeScorecardResult/file22.csv')
@@ -244,7 +242,6 @@ process_vision_data(df28, 28)
 df29 = read_csv('./Low_Data/Department_AnalyzeScorecardResult/file29.csv')
 process_vision_data(df29, 29)
 
-'''
 # 30. 먹거리계획과
 df30 = read_csv('./Low_Data/Department_AnalyzeScorecardResult/file30.csv')
 process_vision_data(df30, 30)
@@ -276,4 +273,3 @@ process_vision_data(df36, 36)
 # 37. 빛가람시설관리사업소
 df37 = read_csv('./Low_Data/Department_AnalyzeScorecardResult/file37.csv')
 process_vision_data(df37, 37)
-'''
